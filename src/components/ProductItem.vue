@@ -1,6 +1,6 @@
 <template>
   <div class="product-card">
-    <div class="product-img">
+    <div class="product-img"  @click="$router.push('/product/'+ product.id)">
       <img :src="product.img">
     </div>
     <h4 class="product-title">{{ product.title }}</h4>
@@ -36,7 +36,6 @@ export default {
   props: ['product', 'cartItem'],
   setup(props) {
     const store = useStore()
-    const isInCart = ref(false)
     const addOne = ()=> {
       store.commit('cart/addOne', props.product.id)
     }

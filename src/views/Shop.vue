@@ -19,8 +19,9 @@ import AppLoader from "@/components/ui/AppLoader";
 import AppPage from "@/components/ui/AppPage";
 import ProductItem from "@/components/ProductItem";
 import ProductsFilter from "@/components/ProductsFilter";
-import {onMounted, computed, ref, watch} from 'vue'
+import {onMounted, computed, ref} from 'vue'
 import {useStore} from "vuex";
+import {useRoute} from "vue-router";
 
 export default {
   name: 'Home',
@@ -32,7 +33,11 @@ export default {
   },
   setup() {
     const store = useStore()
-    const filter = ref({})
+    const route = useRoute()
+    const filter = ref({
+      title: route.query.title,
+      category: route.query.category
+    })
     onMounted(()=> {
         store.dispatch('goods/loadStock')
         store.dispatch('goods/loadCategories')

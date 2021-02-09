@@ -1,25 +1,75 @@
 <template>
-  <app-page back center title="Свекла">
-    <img src="https://images.grocery.yandex.net/2756334/33a66b51989449f9918122a775885fbc/300x300.png" />
-    <p>Категория: <strong>Название категории</strong></p>
-    <button class="btn">
-      123 руб
-    </button>
-    <div class="product-controls in-card">
-      <button class="btn danger">-</button>
-      <strong>12</strong>
-      <button class="btn primary">+</button>
+  <app-page back center :title="product.title">
+    <img :src="product.img" />
+    <p>Категория: <strong>{{ category.title }}</strong></p>
+    <h3
+        class="text-center text-white"
+        v-if="product.count === 0"
+    >
+      Товар не найден.
+    </h3>
+    <div
+        class="product-controls in-card"
+        v-else-if="inCart"
+    >
+      <button
+          class="btn danger"
+          @click="removeOne"
+      >-</button>
+      <strong>{{ inCart.quantity }}</strong>
+      <button
+          class="btn primary"
+          @click="addOne"
+          :disabled="inCart.count === inCart.quantity"
+      >+</button>
     </div>
+    <button
+        class="btn"
+        v-else
+        @click="addToCart"
+    >
+      {{ product.price }}
+    </button>
   </app-page>
-  <h3 class="text-center text-white">
-    Товара не найден.
-  </h3>
 </template>
 
 <script>
 import AppPage from '../components/ui/AppPage'
+import {useRoute} from "vue-router";
+import {useStore} from "vuex";
+import {computed} from "vue";
 export default {
-  components: {AppPage}
+  components: {AppPage},
+  setup() {
+    const route = useRoute()
+    const store = useStore()
+
+    const product = computed(()=> store.getters['goods/product'](route.params.id))
+    const inCart = computed(()=> store.getters['cart/current'](route.params.id))
+
+    const addOne = ()=> {
+      store.commit('cart/addOne', route.params.id)
+    }
+    const removeOne = ()=> {
+      store.commit('cart/removeOne', route.params.id)
+    }
+    const addToCart = ()=> {
+      store.commit('cart/addGoods', {
+        ...product.value,
+        quantity: 1
+      })
+    }
+    const category = computed(()=> store.getters['goods/oneCategory'](product.value.category))
+
+    return {
+      product,
+      inCart,
+      addToCart,
+      removeOne,
+      addOne,
+      category
+    }
+  }
 }
 </script>
 

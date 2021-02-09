@@ -1,8 +1,8 @@
 <template>
   <div class="breadcrumbs" v-if="back">
-    <router-link to="/">Вернуться на главную</router-link>
+    <router-link to="/" class="text-white">Вернуться на главную</router-link>
   </div>
-  <div class="card">
+  <div class="card" :class="{center: center}">
     <h1 class="card-title">
       {{ title }}
       <slot name="header"></slot>
@@ -22,10 +22,14 @@ export default {
     back: {
       type: Boolean,
       default: false
+    },
+    center: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props) {
-    document.title = `${props.title} | Онлайн Банк`
+    document.title = `${props.title} | Online Shop`
   }
 }
 </script>

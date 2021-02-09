@@ -26,6 +26,7 @@
 
 <script>
 import {computed, ref, watch} from "vue";
+import {useRouter} from "vue-router";
 
 export default {
   name: "ProductsFilter",
@@ -34,11 +35,18 @@ export default {
   setup(_, {emit}) {
     const title = ref()
     const category = ref()
+    const router = useRouter()
 
     watch([title,category], values => {
       emit('update:value', {
         title: values[0],
         category: values[1]
+      })
+      router.push({
+        query: {
+          title: values[0],
+          category: values[1]
+        }
       })
     })
 
