@@ -54,6 +54,7 @@ export default {
             return getters.goods.find((item)=> item.id === id)
         },
         oneProduct(state) {
+            console.log(state.oneProduct)
             return state.oneProduct
         },
         categories(state) {
