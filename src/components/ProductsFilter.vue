@@ -13,7 +13,7 @@
     </div>
 
     <ul class="list">
-      <li class="list-item" @click="category = null">Все</li>
+      <li class="list-item" @click="clearCategory">Все</li>
       <li class="list-item"
           v-for="item in categories"
           @click="category = item.type"
@@ -42,21 +42,36 @@ export default {
         title: values[0],
         category: values[1]
       })
-      router.push({
-        query: {
-          title: values[0],
-          category: values[1]
-        }
-      })
+      if(values[0]) {
+        router.replace({
+          query: {
+            title: values[0],
+          }
+        })
+      }
+      if(values[1]) {
+        router.replace({
+          query: {
+            category: values[1]
+          }
+        })
+      }
     })
+    const clearCategory = ()=> {
+      category.value = null
+      router.replace({
+        query: null
+      })
+    }
 
     return {
       title, category,
       isActive: computed(()=> title.value || category.value),
       clearFilter: ()=> {
         title.value = ''
-        category.value = null
-      }
+        clearCategory()
+      },
+      clearCategory
 
     }
   }

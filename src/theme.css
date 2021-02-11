@@ -616,3 +616,9 @@ h3 {
     width: 750px;
     padding: 1rem;
 }
+
+.table-img {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+}

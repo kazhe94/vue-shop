@@ -1,13 +1,9 @@
 <template>
-  <div className="card">
-    <stock-table :products="products"></stock-table>
-  </div>
+  <router-view></router-view>
 </template>
 
 <script>
 import AppPage from "@/components/ui/AppPage";
-import {useStore} from "vuex";
-import {computed, onMounted} from "vue";
 import StockTable from "@/components/admin/StockTable";
 
 export default {
@@ -16,23 +12,7 @@ export default {
     AppPage,
     StockTable
   },
-  setup() {
-    const store = useStore()
 
-    onMounted( ()=> {
-      store.dispatch('goods/loadStock')
-      store.dispatch('goods/loadCategories')
-    })
-
-    const products = computed(()=> {
-      return store.getters['goods/goods']
-    })
-
-    console.log(products.value)
-    return {
-      products
-    }
-  }
 }
 </script>
 

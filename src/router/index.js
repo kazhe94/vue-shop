@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Auth from '@/views/Auth';
 import Shop from '@/views/Shop';
 import store from '../store'
+import Admin from "@/views/admin/Admin";
 
 
 const routes = [
@@ -16,23 +17,34 @@ const routes = [
   {
     path: '/admin',
     name: 'Admin',
-    component: ()=> import('../views/admin/Admin'),
+    redirect: '/admin/stock',
+    component: Admin,
     meta: {
       layout: 'admin',
       auth: true
     },
     children: [
       {
+        path: 'stock',
+        name: 'Stock',
+        component: () => import('../views/admin/Stock')
+      },
+      {
         path: 'categories',
-        name: 'categories',
-        component: ()=> import('../views/admin/Categories'),
+        name: 'Categories',
+        component: () => import('../views/admin/Categories'),
+      },
+      {
+        path: 'product/:id',
+        name: 'AdminProduct',
+        component: ()=> import('../views/admin/Product')
       }
     ]
   },
   {
     path: '/cart',
     name: 'Cart',
-    component: ()=> import('../views/Cart'),
+    component: () => import('../views/Cart'),
     meta: {
       layout: 'main'
     }

@@ -6,13 +6,16 @@ export default {
     state() {
         return {
             allGoods: [],
-            allCategories: []
+            allCategories: [],
+            oneProduct: null
         }
     },
     mutations: {
         addGoods(state, payload) {
             state.allGoods = payload
-            // console.log(state.allGoods)
+        },
+        addOne(state, payload) {
+          state.oneProduct = payload
         },
         addCategories(state, payload) {
             state.allCategories = payload
@@ -20,12 +23,24 @@ export default {
     },
     actions: {
         async loadStock({commit}) {
-            const {data} = await axios.get(`/products`)
-            commit('addGoods', data)
+            try {
+                const {data} = await axios.get(`/products`)
+                commit('addGoods', data)
+            } catch (e) {
+
+            }
         },
         async loadCategories({commit}) {
-            const {data} = await axios.get('/categories')
-            commit('addCategories', data)
+            try {
+                const {data} = await axios.get('/categories')
+                commit('addCategories', data)
+            } catch (e) {}
+        },
+        async loadOne({commit}, id) {
+            try {
+                const {data} = await axios.get(`/products/${id}`)
+                commit('addOne', data)
+            } catch (e) {}
         },
     },
     getters: {
@@ -37,6 +52,9 @@ export default {
         },
         product: (_, getters)=> (id)=> {
             return getters.goods.find((item)=> item.id === id)
+        },
+        oneProduct(state) {
+            return state.oneProduct
         },
         categories(state) {
             return state.allCategories
