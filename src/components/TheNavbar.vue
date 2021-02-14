@@ -3,6 +3,9 @@
     <h3>Online Shop</h3>
     <ul class="navbar-menu">
       <li>
+        <router-link to="/admin">В админку</router-link>
+      </li>
+      <li>
         <router-link to="/">Магазин</router-link>
       </li>
       <li>

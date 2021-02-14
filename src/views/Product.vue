@@ -1,5 +1,6 @@
 <template>
-  <app-page back center :title="product.title">
+  <app-loader v-if="loading"></app-loader>
+  <app-page v-else back center :title="product.title">
     <img :src="product.img" />
     <p>Категория: <strong>{{ category.title }}</strong></p>
     <h3
@@ -35,16 +36,28 @@
 
 <script>
 import AppPage from '../components/ui/AppPage'
+import AppLoader from "@/components/ui/AppLoader";
 import {useRoute} from "vue-router";
 import {useStore} from "vuex";
-import {computed} from "vue";
+import {computed, onMounted, ref} from "vue";
 export default {
-  components: {AppPage},
+  components: {
+    AppPage,
+    AppLoader
+  },
   setup() {
     const route = useRoute()
     const store = useStore()
+    const product = ref()
+    const loading = ref(true)
 
-    const product = computed(()=> store.getters['goods/product'](route.params.id))
+    onMounted(async ()=> {
+      product.value = await store.dispatch('goods/loadOne', route.params.id)
+      await store.dispatch('goods/loadCategories')
+      loading.value = false
+    })
+
+    // const product = computed(()=> store.getters['goods/product'](route.params.id))
     const inCart = computed(()=> store.getters['cart/current'](route.params.id))
 
     const addOne = ()=> {
@@ -67,7 +80,8 @@ export default {
       addToCart,
       removeOne,
       addOne,
-      category
+      category,
+      loading
     }
   }
 }

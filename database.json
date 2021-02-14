@@ -78,7 +78,7 @@
       "title": "Утка",
       "category": "meat",
       "price": 890,
-      "img": "https://myaso-1.ru/wp-content/uploads/2020/02/60588.jpg"
+      "img": "https://narodniy.spb.ru/wp-content/uploads/6522-300x300.png"
     },
     {
       "id": "12",
@@ -199,6 +199,14 @@
       "img": "https://images.grocery.yandex.net/2783132/a14b43cfbbac4898b5a89fd1e52c0029/300x300.png",
       "category": "fruit",
       "id": "WY3injx"
+    },
+    {
+      "title": "Авокадо",
+      "count": "41",
+      "price": "300",
+      "img": "http://dolina-moscow.ru/wp-content/uploads/2020/02/3287512H-300x300.jpg",
+      "category": "fruit",
+      "id": "aevGTZa"
     }
   ],
   "categories": [
