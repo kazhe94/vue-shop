@@ -9,12 +9,24 @@
         :products="products"
     ></stock-table>
   </app-page>
+
+  <teleport to="body">
+    <app-modal
+        v-if="modal"
+        title="Заполните поля для нового товара"
+        @close="modal = false"
+    >
+      <product-form @created="modal = false"></product-form>
+    </app-modal>
+  </teleport>
 </template>
 
 <script>
 import AppPage from "@/components/ui/AppPage";
 import AppLoader from "@/components/ui/AppLoader";
 import StockTable from "@/components/admin/StockTable";
+import AppModal from "@/components/ui/AppModal";
+import ProductForm from "@/components/admin/ProductForm";
 import {useStore} from "vuex";
 import {computed, onMounted, ref} from "vue";
 
@@ -23,11 +35,14 @@ export default {
   components: {
     AppPage,
     StockTable,
-    AppLoader
+    AppLoader,
+    AppModal,
+    ProductForm
   },
   setup() {
     const store = useStore()
     const loading = ref(true)
+    const modal = ref(false)
     onMounted(()=> {
       store.dispatch('goods/loadStock')
       store.dispatch('goods/loadCategories')
@@ -43,7 +58,8 @@ export default {
     return {
       products,
       categories,
-      loading
+      loading,
+      modal
     }
   }
 

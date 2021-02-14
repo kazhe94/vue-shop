@@ -1,5 +1,5 @@
 <template>
-  <app-modal :title="title" @click="$emit('reject')">
+  <app-modal :title="title" @close="$emit('reject')">
     <button class="btn primary" @click="$emit('confirm')">Да</button>
     <button class="btn danger" @click="$emit('reject')">Нет</button>
   </app-modal>

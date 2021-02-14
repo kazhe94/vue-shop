@@ -39,6 +39,9 @@ export default {
         //     })
         //     commit('addGoods', cartData)
         // },
+        setItem({commit},payload) {
+            commit('setItem', payload)
+        }
     },
     getters: {
         goods(state) {
