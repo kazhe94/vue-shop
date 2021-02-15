@@ -58,7 +58,6 @@ export default {
     })
     const categories = computed(()=> store.getters['goods/categories'])
     const cart = computed(()=> store.getters['cart/goods'])
-    console.log(products.value)
     return {
       products,
       categories,

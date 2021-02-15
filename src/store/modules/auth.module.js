@@ -13,7 +13,6 @@ export default {
       setToken(state, token) {
           state.token = token
           localStorage.setItem(TOKEN_KEY, token)
-          console.log(token)
       },
       logout(state) {
           state.token = null

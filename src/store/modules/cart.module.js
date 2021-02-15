@@ -5,40 +5,36 @@ export default {
     namespaced: true,
     state() {
         return {
-            goods: []
+            goods: JSON.parse(localStorage.getItem('goods'))  || []
         }
     },
     mutations: {
         addGoods(state, payload) {
             state.goods.push(payload)
+            localStorage.setItem('goods', JSON.stringify(state.goods))
         },
         addOne(state, id) {
             const currentProduct = state.goods.find((item)=> item.id === id)
 
             if(currentProduct.quantity !== currentProduct.count) {
                 currentProduct.quantity++
+                localStorage.setItem('goods', JSON.stringify(state.goods))
             }
         },
         removeOne(state, id) {
             const currentProduct = state.goods.find((item)=> item.id === id)
             currentProduct.quantity--
+            localStorage.setItem('goods', JSON.stringify(state.goods))
             if(currentProduct.quantity === 0) {
                 state.goods = state.goods.filter((item)=> item.quantity > 0)
+                localStorage.setItem('goods', JSON.stringify(state.goods))
             }
         }
     },
     actions: {
-        // async loadGoods({commit}, payload) {
-        //     const cartProds = Object.keys(payload).map((id)=> `id=${id}`).join('&')
-        //     const {data} = await axios.get(`/products?${cartProds}`)
-        //     const cartData = data.map((item)=> {
-        //         return {
-        //             ...item,
-        //             quantity: payload[item.id]
-        //         }
-        //     })
-        //     commit('addGoods', cartData)
-        // },
+        // setItem({commit},payload) {
+        //     commit('setItem', payload)
+        // }
     },
     getters: {
         goods(state) {

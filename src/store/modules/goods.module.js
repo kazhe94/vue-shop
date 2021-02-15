@@ -7,18 +7,28 @@ export default {
         return {
             allGoods: [],
             allCategories: [],
-            oneProduct: null
         }
     },
     mutations: {
         addGoods(state, payload) {
             state.allGoods = payload
         },
-        addOne(state, payload) {
-          state.oneProduct = payload
-        },
         addCategories(state, payload) {
             state.allCategories = payload
+        },
+        removeCategory(state, payload) {
+            state.allCategories = state.allCategories.filter((item)=> {
+                return item.id !== payload
+            })
+        },
+        addCategory(state, payload) {
+            state.allCategories.push(payload)
+        },
+        addProduct(state, payload) {
+            state.allGoods.push(payload)
+        },
+        removeProduct(state, id) {
+            state.allGoods = state.allGoods.filter(item => item.id !== id)
         }
     },
     actions: {
@@ -36,12 +46,40 @@ export default {
                 commit('addCategories', data)
             } catch (e) {}
         },
-        async loadOne({commit}, id) {
+        loadOne: async (_, id)=> {
             try {
                 const {data} = await axios.get(`/products/${id}`)
-                commit('addOne', data)
+                return data
             } catch (e) {}
         },
+        async removeCategory({commit}, id) {
+            await axios.delete(`/categories/${id}`)
+            commit('removeCategory', id)
+        },
+        async createCategory({commit}, payload) {
+            const {data} = await axios.post(`/categories`, payload)
+            console.log(data)
+            commit('addCategory', {
+                ...payload,
+                id: data.id
+            })
+        },
+        async createProduct({commit}, payload) {
+            const {data} = await axios.post(`/products`, payload)
+            commit('addProduct', {
+                ...payload,
+                id: data.id
+            })
+        },
+        async removeProduct({commit}, id) {
+            await axios.delete(`/products/${id}`)
+            commit('removeProduct', id)
+        },
+        updateProduct: async ({commit}, payload)=> {
+            const {data} = await axios.put(`/products/${payload.id}`, payload)
+            return data
+        }
+
     },
     getters: {
         goods(state) {
@@ -52,9 +90,6 @@ export default {
         },
         product: (_, getters)=> (id)=> {
             return getters.goods.find((item)=> item.id === id)
-        },
-        oneProduct(state) {
-            return state.oneProduct
         },
         categories(state) {
             return state.allCategories
