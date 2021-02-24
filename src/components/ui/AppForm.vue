@@ -26,22 +26,40 @@
 <script>
 
 import {useRoute} from "vue-router";
+import {useRouter} from 'vue-router'
 import {useStore} from "vuex";
 import {useLoginForm} from "@/use/login-form";
 import {error} from "@/utils/error";
+import {computed, ref} from "vue";
 export default {
   name: "Auth",
   setup() {
     const route = useRoute()
     const store = useStore()
+    const router = useRouter()
     if(route.query.message) {
       store.dispatch('setMessage', {
         value: error(route.query.message),
         type: 'warning'
       })
     }
+
+    const submit = async (values)=> {
+        try {
+          await store.dispatch('auth/login', values)
+          // const user = computed(()=> store.getters['auth/user'])
+          //
+          // if(user.value.role === 'admin') {
+          //   await router.push('/admin')
+          // }
+          // if(user.value.role === 'user') {
+          //   await router.push('/')
+          // }
+        } catch (e) {}
+    }
+
     return {
-      ...useLoginForm()
+      ...useLoginForm(submit)
     }
   }
 }

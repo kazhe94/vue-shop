@@ -22,6 +22,7 @@ import ProductsFilter from "@/components/ProductsFilter";
 import {onMounted, computed, ref} from 'vue'
 import {useStore} from "vuex";
 import {useRoute} from "vue-router";
+import axios from "axios";
 
 export default {
   name: 'Home',
@@ -56,12 +57,14 @@ export default {
         return item
       })
     })
+    console.log(products.value)
+
     const categories = computed(()=> store.getters['goods/categories'])
     const cart = computed(()=> store.getters['cart/goods'])
     return {
       products,
       categories,
-      filter,
+      filter
     }
   }
 }

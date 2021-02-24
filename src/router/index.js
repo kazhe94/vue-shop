@@ -21,7 +21,8 @@ const routes = [
     component: Admin,
     meta: {
       layout: 'admin',
-      auth: true
+      auth: true,
+      admin: true
     },
     children: [
       {
@@ -38,6 +39,11 @@ const routes = [
         path: 'product/:id',
         name: 'AdminProduct',
         component: ()=> import('../views/admin/Product')
+      },
+      {
+        path: 'orders',
+        name: 'Orders',
+        component: ()=> import('../views/admin/Orders')
       }
     ]
   },
@@ -76,14 +82,32 @@ const router = createRouter({
 
 router.beforeEach((to, from, next)=> {
   const requireAuth = to.meta.auth
+  const requireAdmin = to.meta.admin
 
-  if(requireAuth && store.getters['auth/isAuthenticated']) {
-    next()
-  } else if (requireAuth && !store.getters['auth/isAuthenticated']) {
-    next('/auth?message=auth')
-  } else {
-    next()
+  if(requireAdmin) {
+    if(store.getters['auth/isAdmin']) {
+      return next()
+    } else {
+      return next('/auth?message=admin')
+    }
   }
+  if(requireAuth) {
+    if(store.getters['auth/isAuthenticated']) {
+      return next()
+    } else {
+      return next('/auth?message=auth')
+    }
+  }
+
+  next()
+
+  // if(requireAuth && store.getters['auth/isAuthenticated']) {
+  //   next()
+  // } else if (requireAuth && !store.getters['auth/isAuthenticated']) {
+  //   next('/auth?message=auth')
+  // } else {
+  //   next()
+  // }
 })
 
 export default router

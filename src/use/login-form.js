@@ -2,10 +2,8 @@ import {useField, useForm} from "vee-validate";
 import * as yup from "yup";
 import {computed, watch} from "vue";
 import {useStore} from 'vuex'
-import {useRouter} from 'vue-router'
 
-export function useLoginForm() {
-    const router = useRouter()
+export function useLoginForm(fn) {
     const store = useStore()
     const {handleSubmit, isSubmitting, submitCount} = useForm()
 
@@ -26,20 +24,7 @@ export function useLoginForm() {
             .min(6, 'Минимальная длина пароля 6 символов')
     )
 
-    const onSubmit = handleSubmit(async (values)=> {
-        try {
-            console.log(values)
-            await store.dispatch('auth/login', values)
-            router.push('/admin')
-        } catch (e) {}
-    })
-
-    const signUp = handleSubmit(async (values)=> {
-        try {
-            console.log(values)
-            await store.dispatch('signup/signUp', values)
-        } catch (e) {}
-    })
+    const onSubmit = handleSubmit(fn)
 
     const isTooManyAttempts = computed(()=> submitCount.value >= 3)
 
@@ -57,7 +42,6 @@ export function useLoginForm() {
         eBlur,
         pBlur,
         onSubmit,
-        signUp,
         isSubmitting,
         isTooManyAttempts
     }

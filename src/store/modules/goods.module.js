@@ -1,5 +1,6 @@
 import axios from '../../axios/goods'
 import store from '../index'
+import {transformData} from '../../utils/transform'
 
 export default {
     namespaced: true,
@@ -29,55 +30,69 @@ export default {
         },
         removeProduct(state, id) {
             state.allGoods = state.allGoods.filter(item => item.id !== id)
-        }
+        },
+        updateCount(state, payload) {
+            const product = state.allGoods.find(item => item.id === payload.id)
+            product.count = payload.count
+        },
+
     },
     actions: {
         async loadStock({commit}) {
             try {
-                const {data} = await axios.get(`/products`)
-                commit('addGoods', data)
+                const {data} = await axios.get(`/products.json`)
+                commit('addGoods', transformData(data))
             } catch (e) {
 
             }
         },
         async loadCategories({commit}) {
             try {
-                const {data} = await axios.get('/categories')
-                commit('addCategories', data)
+                const {data} = await axios.get('/categories.json')
+                commit('addCategories', transformData(data))
             } catch (e) {}
         },
         loadOne: async (_, id)=> {
             try {
-                const {data} = await axios.get(`/products/${id}`)
-                return data
+                const {data} = await axios.get(`/products/${id}.json`)
+                return {
+                    ...data,
+                    id
+                }
             } catch (e) {}
         },
         async removeCategory({commit}, id) {
-            await axios.delete(`/categories/${id}`)
+            await axios.delete(`/categories/${id}.json`)
             commit('removeCategory', id)
         },
         async createCategory({commit}, payload) {
-            const {data} = await axios.post(`/categories`, payload)
-            console.log(data)
+            const {data} = await axios.post(`/categories.json`, payload)
             commit('addCategory', {
                 ...payload,
                 id: data.id
             })
         },
         async createProduct({commit}, payload) {
-            const {data} = await axios.post(`/products`, payload)
+            const {data} = await axios.post(`/products.json`, payload)
             commit('addProduct', {
                 ...payload,
                 id: data.id
             })
         },
         async removeProduct({commit}, id) {
-            await axios.delete(`/products/${id}`)
+            await axios.delete(`/products/${id}.json`)
             commit('removeProduct', id)
         },
         updateProduct: async ({commit}, payload)=> {
-            const {data} = await axios.put(`/products/${payload.id}`, payload)
+            const {data} = await axios.put(`/products/${payload.id}.json`, payload)
             return data
+        },
+        async changeCount({commit}, payload) {
+            await axios.patch(`/products/${payload.id}.json`, {count: payload.count})
+        },
+        loadOrders: async ()=> {
+            const {data} = await axios.get(`/orders.json`)
+            return transformData(data)
         }
 
     },

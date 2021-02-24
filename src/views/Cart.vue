@@ -19,8 +19,19 @@
       title="Необходимо войти в систему или зарегистрироваться для оплаты заказа"
       @close="needAuth = false"
   >
-    <app-form v-if="login"></app-form>
-    <signup-form v-else></signup-form>
+    <component :is="form"></component>
+    <button
+        :class="['btn', {'primary': active === 'login'}]"
+        @click="active = 'login'"
+    >
+      Вход в систему
+    </button>
+    <button
+        :class="['btn', {'primary': active === 'signup'}]"
+        @click="active = 'signup'"
+    >
+      Регистрация
+    </button>
   </app-modal>
 </template>
 
@@ -41,15 +52,26 @@ export default {
   },
   setup() {
     const store = useStore()
-    const needAuth = ref()
     const login = ref(true)
+    const active = ref('login')
+    const needAuth = ref(false)
 
+    const isAuth = computed(()=> store.getters['auth/isAuthenticated'])
     const toPay = ()=> {
-      if(!needAuth) {
+      if(!isAuth.value) {
+        needAuth.value = true
+      }
+      if(isAuth.value) {
+        store.dispatch('cart/createOrder')
         console.log('Оплата произведена')
       }
-      needAuth.value = true
     }
+    const form = computed(()=> {
+      if(active.value === 'login') {
+        return 'app-form'
+      }
+      return 'signup-form'
+    })
 
     const cart = computed(()=> {
       return store.getters['cart/goods']
@@ -60,7 +82,9 @@ export default {
       total,
       needAuth,
       toPay,
-      login
+      login,
+      form,
+      active
     }
   }
 }

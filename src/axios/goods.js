@@ -2,7 +2,7 @@ import axios from "axios";
 import router from '../router/index'
 
 const requestAxios = axios.create({
-    baseURL: process.env.VUE_APP_DB
+    baseURL: process.env.VUE_APP_FB_DB
 })
 
 requestAxios.interceptors.response.use(null, (error)=> {

@@ -57,7 +57,6 @@ export default {
       loading.value = false
     })
 
-    // const product = computed(()=> store.getters['goods/product'](route.params.id))
     const inCart = computed(()=> store.getters['cart/current'](route.params.id))
 
     const addOne = ()=> {

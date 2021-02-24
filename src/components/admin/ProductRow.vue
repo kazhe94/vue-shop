@@ -10,9 +10,7 @@
     <td>{{ category.title }}</td>
     <td>{{ currency(product.price) }}</td>
     <td>
-
-        <button class="btn" @click="$router.push('/admin/product/'+ product.id)">Открыть</button>
-
+      <button class="btn" @click="$router.push('/admin/product/'+ product.id)">Открыть</button>
     </td>
   </tr>
 </template>

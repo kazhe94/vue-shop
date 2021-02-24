@@ -12,6 +12,9 @@
         <router-link to="/admin/categories">Категории</router-link>
       </li>
       <li>
+        <router-link to="/admin/orders">Заказы</router-link>
+      </li>
+      <li>
         <a href="#" @click="logout">Выйти</a>
       </li>
     </ul>

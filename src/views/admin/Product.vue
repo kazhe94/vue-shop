@@ -78,7 +78,7 @@ export default {
     const confirm = ref(false)
     const product = ref()
     onMounted(async ()=> {
-     product.value = await store.dispatch('goods/loadOne', route.params.id)
+      product.value = await store.dispatch('goods/loadOne', route.params.id)
       await store.dispatch('goods/loadCategories')
       pData.value = {...product.value}
       loading.value = false
@@ -102,6 +102,7 @@ export default {
       router.push({name: 'Admin'})
     }
     const update = async ()=> {
+      console.log(pData.value)
       product.value = await store.dispatch('goods/updateProduct', pData.value)
     }
 

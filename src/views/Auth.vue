@@ -1,5 +1,8 @@
 <template>
-  <app-form></app-form>
+  <div class="card">
+    <h1>Войти в систему</h1>
+    <app-form></app-form>
+  </div>
 </template>
 
 <script>

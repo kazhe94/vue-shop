@@ -1,6 +1,12 @@
 <template>
   <form class="card">
-    <div :class="['form-control', {invalid: pError}]">
+    <div :class="['form-control', {invalid: nError}]">
+      <label for="name">Name</label>
+      <input type="text" id="name" v-model="name" @blur="nBlur">
+      <small v-if="nError">{{ nError }}</small>
+    </div>
+
+    <div :class="['form-control', {invalid: eError}]">
       <label for="email">Email</label>
       <input type="email" id="email" v-model="email" @blur="eBlur">
       <small v-if="eError">{{ eError }}</small>
@@ -29,11 +35,20 @@ import {useStore} from "vuex";
 import {useSignUpForm} from "@/use/signup-form";
 export default {
   name: "Auth",
-  setup() {
+  emits:['created'],
+  setup(_, {emit}) {
     const route = useRoute()
     const store = useStore()
+
+    const submit = async (values)=> {
+      try {
+        console.log(values)
+        await store.dispatch('auth/signUp', values)
+        emit('created')
+      } catch (e) {}
+    }
     return {
-      ...useSignUpForm()
+      ...useSignUpForm(submit)
     }
   }
 }
