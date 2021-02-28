@@ -4,7 +4,6 @@
     <orders-table
         v-else
         :orders="orders"
-        :users="users"
     ></orders-table>
   </app-page>
 </template>
@@ -26,7 +25,6 @@ export default {
   setup() {
     const store = useStore()
     const orders = ref()
-    const users = ref([])
     const loading = ref(true)
     onMounted(async ()=> {
       orders.value = await store.dispatch('goods/loadOrders')
@@ -37,7 +35,6 @@ export default {
     return {
       orders,
       loading,
-      users
     }
   }
 }

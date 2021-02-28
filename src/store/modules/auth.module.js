@@ -93,6 +93,13 @@ export default {
         async loadUsers({commit}) {
           const {data} = await baseAxios.get(`/users.json`)
           commit('setUsers', transformData(data))
+        },
+        loadUser: async (_, id)=> {
+          const {data} = await baseAxios.get(`/users/${id}.json`)
+            return {
+              ...data,
+                id
+            }
         }
     },
     getters: {

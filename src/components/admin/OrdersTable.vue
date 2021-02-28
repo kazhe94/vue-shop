@@ -14,6 +14,8 @@
           v-for="(order, idx) in orders"
           :order="order"
           :idx="idx"
+          :key="order.id"
+          :id="order.id"
       ></orders-row>
     </tbody>
   </table>
@@ -27,7 +29,7 @@ export default {
   components: {
     OrdersRow
   },
-  props: ['orders', 'users'],
+  props: ['orders'],
 }
 </script>
 

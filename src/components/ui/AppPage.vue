@@ -1,6 +1,6 @@
 <template>
   <div class="breadcrumbs" v-if="back">
-    <router-link to="/" class="text-white">Вернуться на главную</router-link>
+    <button class="text-white" @click="$router.back()">Вернуться на главную</button>
   </div>
   <div class="card" :class="{center: center}">
     <h1 class="card-title">
@@ -35,5 +35,9 @@ export default {
 </script>
 
 <style scoped>
-
+  button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
 </style>

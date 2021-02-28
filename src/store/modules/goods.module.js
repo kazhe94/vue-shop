@@ -93,6 +93,13 @@ export default {
         loadOrders: async ()=> {
             const {data} = await axios.get(`/orders.json`)
             return transformData(data)
+        },
+        loadOrder: async (_, id)=> {
+            const {data} = await axios.get(`/orders/${id}.json`)
+            return {
+                ...data,
+                id
+            }
         }
 
     },

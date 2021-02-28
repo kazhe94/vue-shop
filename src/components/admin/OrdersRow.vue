@@ -8,7 +8,7 @@
       {{new Date(order.date).toLocaleTimeString()}}
     </td>
     <td>
-      <button class="btn">Открыть</button>
+      <button class="btn" @click="$router.push('/order/' + id)">Открыть</button>
     </td>
   </tr>
 </template>
@@ -19,7 +19,7 @@ import {currency} from "@/utils/currency";
 import {computed} from "vue";
 export default {
   name: "OrdersRow",
-  props: ['order', 'idx'],
+  props: ['order', 'idx', 'id'],
   setup(props) {
     const store = useStore()
     const user = computed(()=> store.getters['auth/orderUser'](props.order.userId))
