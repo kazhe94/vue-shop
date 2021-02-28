@@ -1,3 +1,5 @@
+import {transformData} from "@/utils/transform";
+
 const TOKEN_KEY = 'jwt-token'
 import axios from "axios";
 import baseAxios from '../../axios/goods'
@@ -9,7 +11,8 @@ export default {
     state() {
         return {
             token: localStorage.getItem(TOKEN_KEY),
-            user: JSON.parse(localStorage.getItem('user')) || {}
+            user: JSON.parse(localStorage.getItem('user')) || {},
+            userList: []
         }
     },
     mutations: {
@@ -26,6 +29,9 @@ export default {
       setUser(state, user) {
         state.user = user
           localStorage.setItem('user', JSON.stringify(user))
+      },
+      setUsers(state, users) {
+          state.userList = users
       }
     },
     actions: {
@@ -83,6 +89,10 @@ export default {
                 email: payload.email,
                 name: payload.name
             })
+        },
+        async loadUsers({commit}) {
+          const {data} = await baseAxios.get(`/users.json`)
+          commit('setUsers', transformData(data))
         }
     },
     getters: {
@@ -97,6 +107,12 @@ export default {
         },
         isAdmin(_, getters) {
             return getters.user.role === 'admin'
+        },
+        users(state) {
+          return state.userList
+        },
+        orderUser: (_, getters) => (id) => {
+            return getters.users.find(item => item.id === id)
         }
     }
 }

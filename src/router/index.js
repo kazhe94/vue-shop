@@ -15,6 +15,23 @@ const routes = [
     }
   },
   {
+    path: '/account',
+    name: 'Account',
+    component: () => import('../views/Account'),
+    meta: {
+      layout: 'main',
+      auth: true
+    },
+    children: [
+      {
+        path: 'notifications'
+      },
+      {
+        path: 'orders'
+      }
+    ]
+  },
+  {
     path: '/admin',
     name: 'Admin',
     redirect: '/admin/stock',

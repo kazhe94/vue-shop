@@ -10,39 +10,24 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(order, idx) in orders">
-        <td>{{idx + 1}}</td>
-        <td>{{order.userId}}</td>
-        <td>{{currency(order.sum)}}</td>
-        <td>
-          {{new Date(order.date).toLocaleDateString()}}
-          {{new Date(order.date).toLocaleTimeString()}}
-        </td>
-        <td>
-          <button class="btn">Открыть</button>
-        </td>
-      </tr>
+      <orders-row
+          v-for="(order, idx) in orders"
+          :order="order"
+          :idx="idx"
+      ></orders-row>
     </tbody>
   </table>
 </template>
 
 <script>
+import OrdersRow from "@/components/admin/OrdersRow";
 
-import {currency} from "@/utils/currency";
-import {useStore} from "vuex";
-import {onMounted} from "vue";
 export default {
   name: "OrdersTable",
-  props: ['orders'],
-  setup() {
-    const store = useStore()
-
-
-
-    return {
-      currency,
-    }
-  }
+  components: {
+    OrdersRow
+  },
+  props: ['orders', 'users'],
 }
 </script>
 
